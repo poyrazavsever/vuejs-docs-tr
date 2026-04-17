@@ -1,0 +1,237 @@
+name: Translation Project Automation
+
+on:
+  issues:
+    types: [assigned]
+  pull_request:
+    types: [opened, reopened, ready_for_review, closed]
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+  repository-projects: write
+
+env:
+  PROJECT_OWNER: poyrazavsever
+  PROJECT_NUMBER: '7'
+  STATUS_IN_PROGRESS: In Progress
+  STATUS_PEER_REVIEW: Peer Review
+  STATUS_DONE: Done
+
+jobs:
+  update-project-status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update translation card status
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_AUTOMATION_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const projectOwner = process.env.PROJECT_OWNER;
+            const projectNumber = Number(process.env.PROJECT_NUMBER);
+
+            const normalize = (text) =>
+              (text || "")
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "");
+
+            const isTranslationByTitle = (title) =>
+              /^\[[^\]]+\]:\s+src\/.+\.md$/i.test(title || "");
+
+            const hasTranslationLabel = (labels) =>
+              (labels || []).some((label) => label && label.name === "translation");
+
+            const projectQuery =
+              "query($login: String!, $number: Int!) {" +
+              "  user(login: $login) {" +
+              "    projectV2(number: $number) {" +
+              "      id title " +
+              "      fields(first: 50) {" +
+              "        nodes {" +
+              "          ... on ProjectV2FieldCommon { id name } " +
+              "          ... on ProjectV2SingleSelectField { id name options { id name } } " +
+              "        }" +
+              "      }" +
+              "    }" +
+              "  }" +
+              "  organization(login: $login) {" +
+              "    projectV2(number: $number) {" +
+              "      id title " +
+              "      fields(first: 50) {" +
+              "        nodes {" +
+              "          ... on ProjectV2FieldCommon { id name } " +
+              "          ... on ProjectV2SingleSelectField { id name options { id name } } " +
+              "        }" +
+              "      }" +
+              "    }" +
+              "  }" +
+              "}";
+
+            const data = await github.graphql(projectQuery, {
+              login: projectOwner,
+              number: projectNumber
+            });
+
+            const project = (data.user && data.user.projectV2) || (data.organization && data.organization.projectV2);
+            if (!project) {
+              core.setFailed("Project not found: " + projectOwner + "#" + projectNumber);
+              return;
+            }
+
+            const statusField = project.fields.nodes.find((f) => f.name === "Status");
+            if (!statusField) {
+              core.setFailed("Status field not found in project.");
+              return;
+            }
+
+            const findStatusOptionId = (wantedName) => {
+              const exact = statusField.options.find((o) => o.name.toLowerCase() === wantedName.toLowerCase());
+              if (exact) return exact.id;
+              const wantedNormalized = normalize(wantedName);
+              const fuzzy = statusField.options.find((o) => normalize(o.name) === wantedNormalized);
+              return fuzzy ? fuzzy.id : null;
+            };
+
+            const updateMutation =
+              "mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {" +
+              "  updateProjectV2ItemFieldValue(input: {" +
+              "    projectId: $projectId," +
+              "    itemId: $itemId," +
+              "    fieldId: $fieldId," +
+              "    value: { singleSelectOptionId: $optionId }" +
+              "  }) {" +
+              "    projectV2Item { id }" +
+              "  }" +
+              "}";
+
+            const issueItemsQuery =
+              "query($issueId: ID!) {" +
+              "  node(id: $issueId) {" +
+              "    ... on Issue {" +
+              "      title " +
+              "      projectItems(first: 100) {" +
+              "        nodes {" +
+              "          id " +
+              "          project { id }" +
+              "        }" +
+              "      }" +
+              "    }" +
+              "  }" +
+              "}";
+
+            const setStatusForIssueNode = async (issueNodeId, targetStatusName) => {
+              const optionId = findStatusOptionId(targetStatusName);
+              if (!optionId) {
+                core.warning("Status option not found: " + targetStatusName);
+                return;
+              }
+
+              const issueData = await github.graphql(issueItemsQuery, { issueId: issueNodeId });
+              const issueNode = issueData.node;
+              if (!issueNode || !issueNode.projectItems || !issueNode.projectItems.nodes) {
+                core.info("Issue has no project items: " + issueNodeId);
+                return;
+              }
+
+              const itemIds = issueNode.projectItems.nodes
+                .filter((n) => n.project && n.project.id === project.id)
+                .map((n) => n.id);
+
+              if (itemIds.length === 0) {
+                core.info("Issue is not in target project: " + issueNodeId);
+                return;
+              }
+
+              for (const itemId of itemIds) {
+                await github.graphql(updateMutation, {
+                  projectId: project.id,
+                  itemId: itemId,
+                  fieldId: statusField.id,
+                  optionId: optionId
+                });
+              }
+            };
+
+            const eventName = context.eventName;
+            const action = context.payload.action;
+
+            if (eventName === "issues" && action === "assigned") {
+              const issuePayload = context.payload.issue;
+              const isTranslation =
+                hasTranslationLabel(issuePayload && issuePayload.labels ? issuePayload.labels : []) ||
+                isTranslationByTitle(issuePayload ? issuePayload.title : "");
+
+              if (!isTranslation) {
+                core.info("Assigned issue is not a translation issue. Skipping.");
+                return;
+              }
+
+              const issueNodeId = issuePayload ? issuePayload.node_id : null;
+              if (!issueNodeId) {
+                core.warning("No issue node_id in payload.");
+                return;
+              }
+
+              await setStatusForIssueNode(issueNodeId, process.env.STATUS_IN_PROGRESS);
+              core.info("Issue assigned: moved to In Progress.");
+              return;
+            }
+
+            if (eventName === "pull_request") {
+              const prNodeId = context.payload.pull_request ? context.payload.pull_request.node_id : null;
+              if (!prNodeId) {
+                core.warning("No pull_request node_id in payload.");
+                return;
+              }
+
+              const prQuery =
+                "query($prId: ID!) {" +
+                "  node(id: $prId) {" +
+                "    ... on PullRequest {" +
+                "      closingIssuesReferences(first: 50) {" +
+                "        nodes {" +
+                "          id " +
+                "          title " +
+                "          labels(first: 20) { nodes { name } }" +
+                "        }" +
+                "      }" +
+                "    }" +
+                "  }" +
+                "}";
+
+              const linked = await github.graphql(prQuery, { prId: prNodeId });
+              const linkedIssuesRaw =
+                linked &&
+                linked.node &&
+                linked.node.closingIssuesReferences &&
+                linked.node.closingIssuesReferences.nodes
+                  ? linked.node.closingIssuesReferences.nodes
+                  : [];
+
+              const linkedIssues = linkedIssuesRaw.filter(
+                (issue) =>
+                  hasTranslationLabel(issue && issue.labels && issue.labels.nodes ? issue.labels.nodes : []) ||
+                  isTranslationByTitle(issue ? issue.title : "")
+              );
+
+              if (linkedIssues.length === 0) {
+                core.info("No translation issue found in PR closing references.");
+                return;
+              }
+
+              if (["opened", "reopened", "ready_for_review"].includes(action)) {
+                for (const issue of linkedIssues) {
+                  await setStatusForIssueNode(issue.id, process.env.STATUS_PEER_REVIEW);
+                }
+                core.info("PR opened/reopened/ready_for_review: moved linked issues to Peer Review.");
+                return;
+              }
+
+              if (action === "closed" && context.payload.pull_request && context.payload.pull_request.merged) {
+                for (const issue of linkedIssues) {
+                  await setStatusForIssueNode(issue.id, process.env.STATUS_DONE);
+                }
+                core.info("PR merged: moved linked issues to Done.");
+              }
+            }
