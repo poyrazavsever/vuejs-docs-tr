@@ -2,7 +2,7 @@ name: Translation Project Automation
 
 on:
   issues:
-    types: [assigned]
+    types: [assigned, unassigned]
   pull_request:
     types: [opened, reopened, ready_for_review, closed]
 
@@ -15,6 +15,7 @@ permissions:
 env:
   PROJECT_OWNER: poyrazavsever
   PROJECT_NUMBER: '7'
+  STATUS_READY: Ready
   STATUS_IN_PROGRESS: In Progress
   STATUS_PEER_REVIEW: Peer Review
   STATUS_DONE: Done
@@ -173,7 +174,7 @@ jobs:
             const eventName = context.eventName;
             const action = context.payload.action;
 
-            if (eventName === "issues" && action === "assigned") {
+            if (eventName === "issues" && ["assigned", "unassigned"].includes(action)) {
               const issuePayload = context.payload.issue;
               const isTranslation =
                 hasTranslationLabel(issuePayload && issuePayload.labels ? issuePayload.labels : []) ||
@@ -190,8 +191,19 @@ jobs:
                 return;
               }
 
-              await setStatusForIssueNode(issueNodeId, process.env.STATUS_IN_PROGRESS);
-              core.info("Issue assigned: moved to In Progress.");
+              if (action === "assigned") {
+                await setStatusForIssueNode(issueNodeId, process.env.STATUS_IN_PROGRESS);
+                core.info("Issue assigned: moved to In Progress.");
+                return;
+              }
+
+              const remainingAssignees = issuePayload && issuePayload.assignees ? issuePayload.assignees : [];
+              if (remainingAssignees.length === 0) {
+                await setStatusForIssueNode(issueNodeId, process.env.STATUS_READY);
+                core.info("Issue unassigned and no assignees left: moved to Ready.");
+              } else {
+                core.info("Issue unassigned but other assignees remain: status unchanged.");
+              }
               return;
             }
 
