@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Soru ve Topluluk Etkileşimi (Discussions)
+    url: https://github.com/poyrazavsever/vuejs-docs-tr/discussions
+    about: Lütfen nasıl çeviri yapacağınızla veya proje yönetimi ile ilgili sorularınızı Issue açmak yerine Discussions bölümüne sorun.
+  - name: 🌐 Vue.js Orijinal Dokümantasyonu
+    url: https://vuejs.org/
+    about: Vue.js'in İngilizce (orijinal) dokümantasyon sayfasına git.

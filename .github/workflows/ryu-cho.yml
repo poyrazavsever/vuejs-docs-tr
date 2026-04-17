@@ -1,0 +1,25 @@
+name: Ryu-Cho (Upstream Sync)
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Her gece gece yarısı çalışır
+  workflow_dispatch: # Manuel olarak çalıştırmana izin verir
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Ryu-Cho Sync
+        uses: vuejs-translations/ryu-cho@v1
+        with:
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+          username: "github-actions[bot]"
+          email: "41898282+github-actions[bot]@users.noreply.github.com"
+          upstream-repo: https://github.com/vuejs/docs.git
+          upstream-repo-branch: main
+          head-repo: https://github.com/poyrazavsever/vuejs-docs-tr.git
+          head-repo-branch: main
