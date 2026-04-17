@@ -42,7 +42,7 @@ jobs:
             const hasTranslationLabel = (labels) =>
               (labels || []).some((label) => label && label.name === "translation");
 
-            const projectQuery =
+            const userProjectQuery =
               "query($login: String!, $number: Int!) {" +
               "  user(login: $login) {" +
               "    projectV2(number: $number) {" +
@@ -55,6 +55,10 @@ jobs:
               "      }" +
               "    }" +
               "  }" +
+              "}";
+
+            const orgProjectQuery =
+              "query($login: String!, $number: Int!) {" +
               "  organization(login: $login) {" +
               "    projectV2(number: $number) {" +
               "      id title " +
@@ -68,12 +72,25 @@ jobs:
               "  }" +
               "}";
 
-            const data = await github.graphql(projectQuery, {
+            let project = null;
+
+            const userData = await github.graphql(userProjectQuery, {
               login: projectOwner,
               number: projectNumber
             });
+            project = userData.user && userData.user.projectV2;
 
-            const project = (data.user && data.user.projectV2) || (data.organization && data.organization.projectV2);
+            if (!project) {
+              try {
+                const orgData = await github.graphql(orgProjectQuery, {
+                  login: projectOwner,
+                  number: projectNumber
+                });
+                project = orgData.organization && orgData.organization.projectV2;
+              } catch (error) {
+                core.info("Organization project query skipped: " + error.message);
+              }
+            }
             if (!project) {
               core.setFailed("Project not found: " + projectOwner + "#" + projectNumber);
               return;
