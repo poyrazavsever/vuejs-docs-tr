@@ -8,11 +8,10 @@
   Bir metoda/fonksiyona bağlama işlemi.
   Buradaki @click yazımı aslında v-on:click için kullandığımız bir kısaltmadır.
 -->
-<button @click="reverseMessage">Reverse Message</button>
+<button @click="reverseMessage">Mesajı Tersine Çevir</button>
 
-
-<!-- Can also be an inline expression statement -->
-<button @click="message += '!'">Append "!"</button>
+<!-- Aynı zamanda satır içi (inline) bir ifade de çalıştırabiliriz -->
+<button @click="message += '!'">Sonuna "!" Ekle</button>
 
 <!--
   Vue ayrıca, e.preventDefault() ve e.stopPropagation()
