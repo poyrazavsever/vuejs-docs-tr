@@ -1,5 +1,5 @@
 export default {
-  name: 'TreeItem', // necessary for self-reference
+  name: 'TreeItem', // kendi kendini referans alabilmesi için gerekli
   props: {
     model: Object
   },
@@ -28,7 +28,7 @@ export default {
     },
     addChild() {
       this.model.children.push({
-        name: 'new stuff'
+        name: 'yeni öğe'
       })
     }
   }

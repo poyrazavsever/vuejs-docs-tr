@@ -1,12 +1,12 @@
 <label
-  >Elapsed Time: <progress :value="progressRate"></progress
+  >Geçen Süre: <progress :value="progressRate"></progress
 ></label>
 
-<div>{{ (elapsed / 1000).toFixed(1) }}s</div>
+<div>{{ (elapsed / 1000).toFixed(1) }}sn</div>
 
 <div>
-  Duration: <input type="range" v-model="duration" min="1" max="30000">
-  {{ (duration / 1000).toFixed(1) }}s
+  Süre: <input type="range" v-model="duration" min="1" max="30000">
+  {{ (duration / 1000).toFixed(1) }}sn
 </div>
 
-<button @click="reset">Reset</button>
+<button @click="reset">Sıfırla</button>

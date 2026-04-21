@@ -20,14 +20,14 @@ function pad(n, s = String(n)) {
 export default {
   data() {
     return {
-      flightType: 'one-way flight',
+      flightType: 'tek yön uçuş',
       departureDate: dateToString(new Date()),
       returnDate: dateToString(new Date())
     }
   },
   computed: {
     isReturn() {
-      return this.flightType === 'return flight'
+      return this.flightType === 'gidiş-dönüş uçuş'
     },
     canBook() {
       return (
@@ -40,8 +40,8 @@ export default {
     book() {
       alert(
         this.isReturn
-          ? `You have booked a return flight leaving on ${this.departureDate} and returning on ${this.returnDate}.`
-        	: `You have booked a one-way flight leaving on ${this.departureDate}.`
+          ? `${this.departureDate} gidiş ve ${this.returnDate} dönüş tarihli uçuşunuz rezerve edildi.`
+        	: `${this.departureDate} tarihli tek yön uçuşunuz rezerve edildi.`
       )
     }
   }
