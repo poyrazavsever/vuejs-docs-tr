@@ -97,7 +97,7 @@ Bu dokuman, ceviriyi dosya bazinda sirasiyla ilerletmek icin hazirlanmistir.
 - [ ] src/guide/scaling-up/routing.md
 - [ ] src/guide/scaling-up/state-management.md
 - [ ] src/guide/scaling-up/testing.md
-- [ ] src/guide/scaling-up/ssr.md
+- [x] src/guide/scaling-up/ssr.md
 
 ### Faz 4: Built-ins, Best Practices, TypeScript (12 dosya)
 
