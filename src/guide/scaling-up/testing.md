@@ -212,13 +212,13 @@ await fireEvent.click(button)
 
   Bileşenin nihai görevi doğru DOM çıktısını render etmektir; dolayısıyla DOM çıktısına odaklanan testler aynı düzeyde (belki de daha yüksek düzeyde) doğruluk güvencesi verir ve değişikliğe karşı daha dayanıklı, daha sağlam olur.
 
-  Yalnızca snapshot testlerine güvenmeyin. HTML dizelerini doğrulamak doğruluğu tarif etmez. Testlerinizi bir amaçla yazın.
+  Yalnızca snapshot testlerine güvenmeyin. HTML dizelerini doğrulamak doğruluğu garanti etmez. Testlerinizi bir amaçla yazın.
 
   Bir metot baştan sona test edilmeliyse, onu bağımsız bir yardımcı fonksiyona çıkarmayı ve ona özel bir birim test yazmayı değerlendirin. Temiz şekilde çıkarılamıyorsa, onu kapsayan bir bileşen, entegrasyon ya da uçtan uca testin parçası olarak test edilebilir.
 
 ### Öneri {#recommendation-1}
 
-- Başsız (headless) şekilde render eden bileşenler ya da composable'lar (örn. VueUse içindeki [`useFavicon`](https://vueuse.org/core/useFavicon/#usefavicon) fonksiyonu) için [Vitest](https://vitest.dev/). Bileşenler ve DOM, [`@vue/test-utils`](https://github.com/vuejs/test-utils) kullanılarak test edilebilir.
+- Görsel arayüz olmadan çalışan (headless) bileşenler ya da composable'lar (örn. VueUse içindeki [`useFavicon`](https://vueuse.org/core/useFavicon/#usefavicon) fonksiyonu) için [Vitest](https://vitest.dev/). Bileşenler ve DOM, [`@vue/test-utils`](https://github.com/vuejs/test-utils) kullanılarak test edilebilir.
 
 - Beklenen davranışı stillerin doğru render edilmesine ya da yerel DOM olaylarının tetiklenmesine bağlı bileşenler için [Cypress Component Testing](https://on.cypress.io/component). [@testing-library/cypress](https://testing-library.com/docs/cypress-testing-library/intro) aracılığıyla Testing Library ile birlikte de kullanılabilir.
 
@@ -274,11 +274,11 @@ Geliştiriciler geleneksel olarak bir testte neyin yanlış gittiğini anlamak i
 
 #### Başsız (Headless) Modda Görünürlük {#visibility-in-headless-mode}
 
-Uçtan uca (E2E) testler sürekli entegrasyon / dağıtım hatlarında çalıştırıldığında, genellikle başsız (headless) tarayıcılarda çalıştırılırlar (yani kullanıcının izleyebileceği görünür bir tarayıcı açılmaz). Modern E2E test framework'lerinin kritik bir özelliği, test sırasında uygulamanın snapshot'larını ve/veya videolarını görebilmektir; bu, hataların neden oluştuğuna dair içgörü sunar. Bu entegrasyonları sürdürmek tarihsel olarak zahmetliydi.
+Uçtan uca (E2E) testler sürekli entegrasyon / dağıtım hatlarında çalıştırıldığında, genellikle görsel arayüzü olmayan (headless) tarayıcıda çalışır. Modern E2E test framework'lerinin kritik bir özelliği, test sırasında uygulamanın snapshot'larını ve/veya videolarını görebilmektir; bu, hataların neden oluştuğuna dair içgörü sunar. Bu entegrasyonları sürdürmek tarihsel olarak zahmetliydi.
 
 ### Öneri {#recommendation-2}
 
-- [Playwright](https://playwright.dev/); Chromium, WebKit ve Firefox'u destekleyen harika bir E2E test çözümüdür. Windows, Linux ve macOS üzerinde; yerelde ya da CI'da; başsız (headless) veya başlı (headed) olarak; Android için Google Chrome ve Mobile Safari'nin yerel mobil emülasyonuyla test yapmanızı sağlar. Bilgilendirici bir kullanıcı arayüzü, mükemmel hata ayıklanabilirlik, yerleşik doğrulamalar, paralelleştirme, trace'ler sunar ve flaky testleri ortadan kaldırmak üzere tasarlanmıştır. [Bileşen Testi](https://playwright.dev/docs/test-components) desteği mevcut ancak deneysel olarak işaretlenmiştir. Playwright açık kaynaktır ve Microsoft tarafından sürdürülmektedir.
+- [Playwright](https://playwright.dev/); Chromium, WebKit ve Firefox'u destekleyen harika bir E2E test çözümüdür. Windows, Linux ve macOS üzerinde; yerelde ya da CI'da; başsız (headless) veya başlı (headed) olarak; Android için Google Chrome ve Mobile Safari'nin yerel mobil emülasyonuyla test yapmanızı sağlar. Bilgilendirici bir kullanıcı arayüzü, mükemmel hata ayıklanabilirlik, yerleşik doğrulamalar, paralelleştirme, trace'ler sunar ve kararsız (flaky) testleri azaltmak için tasarlanmıştır. [Bileşen Testi](https://playwright.dev/docs/test-components) desteği mevcut ancak deneysel olarak işaretlenmiştir. Playwright açık kaynaktır ve Microsoft tarafından sürdürülmektedir.
 
 - [Cypress](https://www.cypress.io/); bilgilendirici bir grafik arayüze, mükemmel hata ayıklanabilirliğe, yerleşik doğrulamalara, stub'lara, flaky'e karşı dirence ve snapshot'lara sahiptir. Yukarıda belirtildiği gibi, [Bileşen Testi](https://docs.cypress.io/guides/component-testing/introduction) için sağlam bir destek sunar. Cypress; Chromium tabanlı tarayıcıları, Firefox'u ve Electron'u destekler. WebKit desteği mevcut ancak deneysel olarak işaretlenmiştir. Cypress MIT lisanslıdır, ancak paralelleştirme gibi bazı özellikler Cypress Cloud aboneliği gerektirir.
 
