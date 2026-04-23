@@ -152,7 +152,7 @@ app.mount('#app')
 
 ### Kod Yapısı {#code-structure}
 
-Sunucudaki aynı uygulama uygulamasını nasıl yeniden kullandığımıza dikkat edin. İşte SSR uygulamalarında kod yapısını düşünmeye başlamamız gereken yer burası — aynı uygulama kodunu sunucu ve istemci arasında nasıl paylaşırız?
+Sunucudakiyle aynı uygulama kodunu nasıl yeniden kullandığımıza dikkat edin. İşte SSR uygulamalarında kod yapısını düşünmeye başlamamız gereken yer burası — aynı uygulama kodunu sunucu ve istemci arasında nasıl paylaşırız?
 
 Burada en sade kurulumu göstereceğiz. Önce uygulama oluşturma mantığını `app.js` adlı ayrı bir dosyaya taşıyalım:
 
@@ -204,7 +204,7 @@ Ayrıca istemci dosyalarını tarayıcıda yükleyebilmek için şunları da yap
 
 Örnekten üretime hazır bir SSR uygulamasına geçmek çok daha fazlasını içerir. Şunları yapmamız gerekir:
 
-- Vue SFC'leri ve diğer derleme adımı gereksinimlerini desteklemek. Aslında aynı uygulama için iki derlemeyi koordine etmemiz gerekir: biri istemci, diğeri sunucu için.
+- Vue Tek Dosyalı Bileşenleri (Single File Components - SFC) ve diğer derleme adımı gereksinimlerini desteklemek. Aslında aynı uygulama için iki derlemeyi koordine etmemiz gerekir: biri istemci için, diğeri sunucu için.
 
   :::tip
   Vue bileşenleri SSR için kullanıldığında farklı şekilde derlenir — daha verimli render performansı için şablonlar, Sanal DOM render fonksiyonları yerine dize birleştirmelerine (string concatenation) derlenir.
@@ -214,7 +214,7 @@ Ayrıca istemci dosyalarını tarayıcıda yükleyebilmek için şunları da yap
 
 - Yönlendirme (routing), veri çekme ve durum yönetimi (state management) store'larını evrensel bir şekilde yönetmek.
 
-Tam bir uygulama oldukça karmaşık olabilir ve seçtiğiniz derleme araç zincirine bağlıdır. Bu nedenle karmaşıklığı sizin için soyutlayan, daha üst seviye ve fikir sahibi bir çözümle ilerlemenizi şiddetle öneririz. Aşağıda Vue ekosisteminde önerilen birkaç SSR çözümünü tanıtacağız.
+Tam bir uygulama oldukça karmaşık olabilir ve seçtiğiniz derleme araç zincirine bağlıdır. Bu nedenle karmaşıklığı sizin için soyutlayan, daha üst seviye ve belirli tercihler sunan bir çözümle ilerlemenizi şiddetle öneririz. Aşağıda Vue ekosisteminde önerilen birkaç SSR çözümünü tanıtacağız.
 
 ### Nuxt {#nuxt}
 
@@ -264,7 +264,7 @@ Ancak SSR bağlamında uygulama modülleri genellikle sunucu açılışında yal
 
 Teknik olarak, tarayıcılarda olduğu gibi her istekte tüm JavaScript modüllerini yeniden başlatabiliriz. Ancak JavaScript modüllerini başlatmak maliyetli olabilir, bu da sunucu performansını önemli ölçüde etkiler.
 
-Önerilen çözüm, her istekte router ve global store'lar dahil tüm uygulamanın yeni bir örneğini oluşturmaktır. Ardından paylaşılan durumu bileşenlerde doğrudan içe aktarmak yerine [uygulama düzeyinde provide](/guide/components/provide-inject#app-level-provide) ile sağlar ve ihtiyaç duyan bileşenlere inject ederiz:
+Önerilen çözüm, her istekte router ve global store'lar dahil tüm uygulamanın yeni bir örneğini oluşturmaktır. Ardından paylaşılan durumu bileşenlerde doğrudan içe aktarmak yerine [uygulama düzeyinde provide](/guide/components/provide-inject#app-level-provide) ile sağlarız ve ihtiyaç duyan bileşenlere inject ederiz:
 
 ```js [app.js]
 // (sunucu ve istemci arasında paylaşılır)
@@ -317,7 +317,7 @@ Vue bir hydration uyuşmazlığıyla karşılaştığında otomatik olarak kurta
 
 Vue 3.5+ sürümünde, kaçınılmaz hydration uyuşmazlıklarını [`data-allow-mismatch`](/api/ssr#data-allow-mismatch) özniteliğini kullanarak seçici biçimde bastırmak mümkündür.
 
-### Özel Direktifler {#custom-directives}
+### Özel Yönerge {#custom-directives}
 
 Çoğu özel direktif doğrudan DOM manipülasyonu içerdiği için SSR sırasında yok sayılır. Ancak özel bir direktifin nasıl render edileceğini (yani render edilen elemana hangi öznitelikleri eklemesi gerektiğini) belirtmek istiyorsanız, `getSSRProps` direktif kancasını kullanabilirsiniz:
 
@@ -343,7 +343,7 @@ const myDirective = {
 
 Teleport'lar SSR sırasında özel işlem gerektirir. Render edilen uygulama Teleport içeriyorsa, ışınlanan içerik render edilen dizenin bir parçası olmaz. Daha kolay bir çözüm, Teleport'u mount sırasında koşullu olarak render etmektir.
 
-Işınlanan içeriği hydrate etmeniz gerekiyorsa, bunlar ssr bağlam nesnesinin `teleports` özelliği altında sunulur:
+Işınlanan içeriği hydrate (etkileşimli hale getirme) etmeniz gerekiyorsa, bunlar ssr bağlam nesnesinin `teleports` özelliği altında sunulur:
 
 ```js
 const ctx = {}
