@@ -60,13 +60,13 @@ Görüldüğü gibi Vue SFC, klasik HTML, CSS ve JavaScript üçlüsünün doğa
 SFC'ler bir derleme adımı (build step) gerektirse de karşılığında pek çok avantaj sunar:
 
 - Bildiğiniz HTML, CSS ve JavaScript söz dizimiyle modüler bileşenler yazma
-- [Doğası gereği bağlı kalan kısımların birlikte tutulması](#what-about-separation-of-concerns)
+- [Doğası gereği bağlantılı ilgi alanlarının aynı yerde tutulması](#what-about-separation-of-concerns)
 - Çalışma zamanı derleme maliyeti olmadan önceden derlenmiş şablonlar
-- [Bileşen kapsamlı CSS](/api/sfc-css-features)
+- [Bileşen kapsamına alınmış CSS](/api/sfc-css-features)
 - [Composition API ile çalışırken daha ergonomik söz dizimi](/api/sfc-script-setup)
 - Şablon ile script'in çapraz analiziyle daha fazla derleme zamanı optimizasyonu
 - Şablon ifadeleri için otomatik tamamlama ve tür denetimi içeren [IDE desteği](/guide/scaling-up/tooling#ide-support)
-- Kutudan çıkar çıkmaz Hot-Module Replacement (HMR) desteği
+- Yerleşik Hot Module Replacement (HMR) desteği
 
 SFC, Vue'yu bir framework olarak tanımlayan temel özelliklerden biridir ve aşağıdaki senaryolarda Vue'yu kullanmanın önerilen yoludur:
 
@@ -94,11 +94,11 @@ SFC'lerin içindeki `<style>` etiketleri, geliştirme sırasında anlık güncel
 
 SFC'lerle denemeler yapmak ve nasıl derlendiklerini görmek için [Vue SFC Playground](https://play.vuejs.org/) kullanabilirsiniz.
 
-Gerçek projelerde SFC derleyicisini genellikle [Vite](https://vite.dev/) veya [Vue CLI](http://cli.vuejs.org/) ([webpack](https://webpack.js.org/) tabanlı) gibi bir derleme aracıyla entegre ederiz. Vue, SFC'lerle mümkün olan en hızlı şekilde başlamanız için resmi iskelet araçları sağlar. Daha fazla ayrıntı için [SFC Araçları](/guide/scaling-up/tooling) bölümüne bakın.
+Gerçek projelerde SFC derleyicisini genellikle [Vite](https://vite.dev/) veya [Vue CLI](http://cli.vuejs.org/) ([webpack](https://webpack.js.org/) tabanlı) gibi bir derleme aracıyla entegre ederiz. Vue, SFC'lerle mümkün olan en hızlı şekilde başlamanız için resmi proje iskeleti oluşturma araçları sağlar. Daha fazla ayrıntı için [SFC Araçları](/guide/scaling-up/tooling) bölümüne bakın.
 
-## Peki Ya İlgi Ayrımı (Separation of Concerns)? {#what-about-separation-of-concerns}
+## Sorumlulukların Ayrılması? {#what-about-separation-of-concerns}
 
-Geleneksel web geliştirme geçmişinden gelen bazı kullanıcılar, SFC'lerin birbirinden ayrı tutulması gereken HTML/CSS/JS ilgilerini aynı yerde birleştirdiğini düşünebilir.
+Geleneksel web geliştirme geçmişine sahip bazı kullanıcılar, SFC’lerin HTML, CSS ve JavaScript’in ayrı tutulması gereken sorumluluklarını aynı yerde birleştirdiği konusunda endişe duyabilir.
 
 Bu soruyu yanıtlamak için önce şu konuda uzlaşmamız önemli: **İlgi ayrımı, dosya türü ayrımıyla aynı şey değildir.** Mühendislik ilkelerinin nihai amacı kod tabanının sürdürülebilirliğini artırmaktır. İlgi ayrımı, dosya türü ayrımı olarak dogmatik biçimde uygulandığında, giderek karmaşıklaşan ön yüz uygulamaları bağlamında bu amaca ulaşmamıza yardımcı olmaz.
 
