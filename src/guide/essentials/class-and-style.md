@@ -1,6 +1,6 @@
 # Sınıf ve Stil Bağlamaları (Bind) {#class-and-style-bindings}
 
-Veri bağlamada (bind) yaygın bir ihtiyaç, bir öğenin sınıf listesini ve satır içi (inline) stillerini yönetmektir. Hem `class` hem de `style` birer öznitelik (attribute) olduğu için, tıpkı diğer özniteliklerde olduğu gibi bunlara da dinamik olarak karakter dizesi (string) değeri atamak için `v-bind` kullanabiliriz. Ancak, bu değerleri string birleştirme (string concatenation) kullanarak oluşturmaya çalışmak zahmetli ve hataya açık olabilir. Bu nedenle, Vue `class` ve `style` bağlamalarında `v-bind` kullanımını özel iyileştirmelerle destekler. Karakter dizelerine (string) ek olarak, bu ifadeler nesne (object) veya dizi (array) olarak da değerlendirilebilir.
+Veri bağlamada (bind) yaygın bir ihtiyaç, bir öğenin sınıf listesini ve satır içi (inline) stillerini yönetmektir. Hem `class` hem de `style` birer öznitelik (attribute) olduğu için, tıpkı diğer özniteliklerde olduğu gibi bunlara da dinamik olarak karakter dizesi (string) değeri atamak için `v-bind` kullanabiliriz. Ancak, bu değerleri string birleştirme (string concatenation) kullanarak oluşturmaya çalışmak zahmetli ve hataya açık olabilir. Bu nedenle, Vue `class` ve `style` bağlamalarında `v-bind` kullanımında özel iyileştirmeler sağlar. Karakter dizelerine (string) ek olarak, bu ifadeler nesne (object) veya dizi (array) olarak da değerlendirilebilir.
 
 ## HTML Sınıflarını Bağlama {#binding-html-classes}
 
@@ -22,7 +22,7 @@ Sınıfları dinamik olarak açıp kapatmak (toggle) için `:class`'a (`v-bind:c
 
 Yukarıdaki söz dizimi, `active` sınıfının varlığının `isActive` veri özelliğinin [doğruluk değerine (truthiness)](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) göre belirleneceği anlamına gelir.
 
-Nesneye daha fazla alan ekleyerek birden fazla sınıfın açılıp kapanmasını (toggle) sağlayabilirsiniz. Ayrıca `:class` direktifi, düz `class` özniteliği ile bir arada bulunabilir. Aşağıdaki durum:
+Nesneye daha fazla alan ekleyerek birden fazla sınıfın açılıp kapanmasını (toggle) sağlayabilirsiniz. Ayrıca `:class` yönergesi, düz `class` özniteliği ile bir arada bulunabilir. Aşağıdaki durum:
 
 <div class="composition-api">
 
@@ -323,7 +323,7 @@ data() {
 
 Yine, nesne stil bağlaması genellikle nesne döndüren hesaplanmış özellikler (computed properties) ile birlikte kullanılır.
 
-`:style` direktifleri, tıpkı `:class` gibi, düz stil öznitelikleriyle birlikte kullanılabilir.
+`:style` yönergeleri, tıpkı `:class` gibi, düz stil öznitelikleriyle birlikte kullanılabilir.
 
 Şablon:
 
