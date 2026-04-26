@@ -8,7 +8,7 @@
 
 ## Props Tanımlama {#props-declaration}
 
-Vue bileşenleri, bileşene iletilen hangi dış props’ların aktarılacak öznitelikler olarak ele alınacağını Vue’nün bilmesi için açık bir props tanımlaması gerektirir (bu konu [kendi bölümünde](/guide/components/attrs) ele alınacaktır).
+Vue bileşenleri, bileşene iletilen dış özelliklerden (props) hangilerinin aktarılacak öznitelikler (fallthrough attributes) olarak ele alınacağını Vue’nün bilmesi için açık bir props tanımı gerektirir (bu konu [kendi bölümünde](/guide/components/attrs) ele alınacaktır).
 
 <div class="composition-api">
 
@@ -34,7 +34,7 @@ export default {
 }
 ```
 
-Dikkat edin, `defineProps()` fonksiyonuna geçirilen argüman, `props` seçeneğine verilen değerle aynıdır: aynı props options API, bu iki tanımlama stili arasında paylaşılır.
+Dikkat edin, `defineProps()` fonksiyonuna geçirilen argüman, `props` seçeneğine verilen değerle aynıdır: her iki tanımlama stili de aynı props seçenekleri API’sini kullanır.
 
 </div>
 
@@ -219,7 +219,7 @@ Teknik olarak, props’ları bir alt bileşene aktarırken camelCase de kullanab
 <MyComponent greeting-message="hello" />
 ```
 
-Mümkün olduğunda [bileşen etiketleri için PascalCase](/guide/components/registration#component-name-casing) kullanırız çünkü bu, şablon okunabilirliğini artırarak Vue bileşenlerini yerel HTML  öğelerinden ayırmayı kolaylaştırır. Ancak props aktarırken camelCase kullanmanın aynı düzeyde pratik bir avantajı olmadığı için, her dilin kendi kullanım kurallarını takip etmeyi tercih ederiz.
+Mümkün olduğunda [bileşen etiketleri için PascalCase](/guide/components/registration#component-name-casing) kullanırız çünkü bu, şablon okunabilirliğini artırarak Vue bileşenlerini yerleşik (native) HTML öğelerinden ayırmayı kolaylaştırır. Ancak props aktarırken camelCase kullanmanın aynı düzeyde pratik bir avantajı olmadığı için, her dilin kendi kullanım kurallarını takip etmeyi tercih ederiz.
 
 ### Statik ve Dinamik Props {#static-vs-dynamic-props}
 
@@ -390,7 +390,7 @@ Bir prop’u değiştirmeye (mutate etmeye) yönelme eğiliminin genellikle iki 
      props: ['initialCounter'],
      data() {
        return {
-         // counter, props.initialCounter değerini yalnızca başlangıç değeri olarak kullanır;
+         // counter, this.initialCounter değerini yalnızca başlangıç değeri olarak kullanır;
          // sonraki prop güncellemeleriyle bağlantılı değildir.
          counter: this.initialCounter
        }
