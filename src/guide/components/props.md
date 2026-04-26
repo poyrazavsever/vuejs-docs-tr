@@ -8,7 +8,7 @@
 
 ## Props Tanımlama {#props-declaration}
 
-Vue bileşenleri, bileşene iletilen dış özelliklerden (props) hangilerinin aktarılacak öznitelikler (fallthrough attributes) olarak ele alınacağını Vue’nün bilmesi için açık bir props tanımı gerektirir (bu konu [kendi bölümünde](/guide/components/attrs) ele alınacaktır).
+Vue bileşenleri, bileşene iletilen dış özelliklerden (props) hangilerinin aktarılacak öznitelikler (fallthrough attributes) olarak ele alınacağını Vue’nün bilmesi için açık bir props tanımlaması gerektirir (bu konu [kendi bölümünde](/guide/components/attrs) ele alınacaktır).
 
 <div class="composition-api">
 
