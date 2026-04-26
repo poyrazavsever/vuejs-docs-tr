@@ -12,7 +12,7 @@ Vue bileşenleri, bileşene iletilen hangi dış props’ların aktarılacak öz
 
 <div class="composition-api">
 
-`<script setup>` kullanan SFC'lerde (Tek Dosyalı Bileşenler'de), props `defineProps()` makrosu kullanılarak tanımlanabilir:
+`<script setup>` kullanan SFC'lerde (Tek Dosyalı Bileşenlerde), props `defineProps()` makrosu kullanılarak tanımlanabilir:
 
 ```vue
 <script setup>
