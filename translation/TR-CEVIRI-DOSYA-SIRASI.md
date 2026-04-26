@@ -108,7 +108,7 @@ Bu dokuman, ceviriyi dosya bazinda sirasiyla ilerletmek icin hazirlanmistir.
 - [ ] src/guide/built-ins/suspense.md
 - [ ] src/guide/best-practices/security.md
 - [ ] src/guide/best-practices/accessibility.md
-- [ ] src/guide/best-practices/performance.md
+- [x] src/guide/best-practices/performance.md
 - [ ] src/guide/best-practices/production-deployment.md
 - [ ] src/guide/typescript/overview.md
 - [ ] src/guide/typescript/composition-api.md
