@@ -37,7 +37,7 @@ Yerel geliştirme sırasında performansı profillemek için:
 
 ## Sayfa Yükleme Optimizasyonları {#page-load-optimizations}
 
-Sayfa yükleme performansını optimize etmenin framework'ten bağımsız birçok yönü vardır — kapsamlı bir derleme için [web.dev rehberine](https://web.dev/fast/) göz atabilirsiniz. Burada öncelikle Vue'ya özgü tekniklere odaklanacağız.
+Sayfa yükleme performansını optimize etmenin framework'ten bağımsız birçok yönü vardır — kapsamlı bir genel bakış için [web.dev rehberine](https://web.dev/fast/) göz atabilirsiniz. Burada öncelikle Vue'ya özgü tekniklere odaklanacağız.
 
 ### Doğru Mimariyi Seçmek {#choosing-the-right-architecture}
 
@@ -51,7 +51,7 @@ Sayfa yükleme performansını iyileştirmenin en etkili yollarından biri daha 
 
 - Mümkünse bir derleme adımı (build step) kullanın.
 
-  - Vue'nun API'lerinin çoğu, modern bir derleme aracıyla paketlendiğinde ["tree-shakable"dir](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking). Örneğin, yerleşik `<Transition>` bileşenini kullanmıyorsanız nihai üretim paketine dahil edilmez. Tree-shaking, kaynak kodunuzdaki kullanılmayan diğer modülleri de kaldırabilir.
+  - Vue'nun API'lerinin çoğu, modern bir derleme aracıyla paketlendiğinde ["tree-shakable"dır](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking). Örneğin, yerleşik `<Transition>` bileşenini kullanmıyorsanız nihai üretim paketine dahil edilmez. Tree-shaking, kaynak kodunuzdaki kullanılmayan diğer modülleri de kaldırabilir.
 
   - Bir derleme adımı kullanıldığında şablonlar önceden derlenir, böylece Vue derleyicisini tarayıcıya göndermeye gerek kalmaz. Bu, min+gzipped olarak **14kb** JavaScript tasarrufu sağlar ve çalışma zamanı derleme maliyetini ortadan kaldırır.
 
@@ -217,4 +217,5 @@ shallowArray.value = [
 
 Bazen daha iyi soyutlama veya kod organizasyonu için [render etmeyen bileşenler (renderless components)](/guide/components/slots#renderless-components) veya yüksek dereceli bileşenler (yani diğer bileşenleri ek props ile render eden bileşenler) oluşturabiliriz. Bunda yanlış bir şey yok; ancak bileşen örneklerinin düz DOM düğümlerinden çok daha maliyetli olduğunu ve soyutlama desenleri nedeniyle bunlardan çok fazlasını oluşturmanın performans maliyetine yol açacağını unutmayın.
 
-Yalnızca birkaç örneği azaltmanın belirgin bir etkisi olmayacağını unutmayın; bu nedenle bileşen uygulamada birkaç kez render ediliyorsa kafanıza takmayın. Bu optimizasyonu değerlendirmek için en uygun senaryo yine büyük listelerdir. Her öğe bileşeninin birçok alt bileşen içerdiği 100 öğelik bir liste düşünün. Burada gereksiz bir bileşen soyutlamasını kaldırmak yüzlerce bileşen örneğinin azalmasına yol açabilir.
+Yalnızca birkaç örneği azaltmanın belirgin bir etkisi olmayacağını unutmayın; bu nedenle bileşen uygulamada yalnızca birkaç kez render ediliyorsa endişelenmeyin. Bu optimizasyonu değerlendirmek için en uygun senaryo yine büyük listelerdir. Her öğe bileşeninin birçok alt bileşen içerdiği 100 öğelik bir liste düşünün. Burada gereksiz bir bileşen soyutlamasını kaldırmak yüzlerce bileşen örneğinin azalmasına yol açabilir.
+
