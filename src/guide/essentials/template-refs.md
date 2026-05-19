@@ -184,11 +184,11 @@ export default {
 
 </div>
 
-<span class="composition-api">Alt bileşen Options API kullanıyorsa veya `<script setup>` kullanmıyorsa, referans verilen örnek</span><span class="options-api">Referans verilen örnek</span> alt bileşenin `this` değeriyle aynı olacaktır. Bu da üst bileşenin, alt bileşenin tüm özellik ve metodlarına tam erişimi olacağı anlamına gelir. Bu durum, üst ve alt bileşenin uygulama ayrıntıları arasında sıkı bağlantılar oluşturabilir. Bu nedenle bileşen ref'leri yalnızca gerçekten gerektiğinde kullanılmalıdır. Çoğu durumda önce standart props ve emit arayüzleriyle üst / alt bileşen etkileşimlerini kurmayı denemelisiniz.
+<span class="composition-api">Alt bileşen Options API kullanıyorsa veya `<script setup>` kullanmıyorsa, referans verilen örnek</span><span class="options-api">Referans verilen örnek</span> alt bileşenin `this` değeriyle aynı olacaktır. Bu da üst bileşenin, alt bileşenin tüm özellik ve metotlarına tam erişimi olacağı anlamına gelir. Bu durum, üst ve alt bileşenin uygulama ayrıntıları arasında sıkı bağlantılar oluşturabilir. Bu nedenle bileşen ref'leri yalnızca gerçekten gerektiğinde kullanılmalıdır. Çoğu durumda önce standart props ve emit arayüzleriyle üst / alt bileşen etkileşimlerini kurmayı denemelisiniz.
 
 <div class="composition-api">
 
-Buradaki istisna, `<script setup>` kullanan bileşenlerin varsayılan olarak **gizli** olmasıdır: `<script setup>` kullanan bir alt bileşene referans veren üst bileşen, alt bileşen `defineExpose` makrosunu kullanarak genel bir arayüz sunmayı seçmediği sürece hiçbir şeye erişemez:
+Buradaki istisna, `<script setup>` kullanan bileşenlerin varsayılan olarak **dışarıya kapalı** olmasıdır: `<script setup>` kullanan bir alt bileşene referans veren üst bileşen, alt bileşen `defineExpose` makrosunu kullanarak genel bir arayüz sunmayı seçmediği sürece hiçbir şeye erişemez:
 
 ```vue
 <script setup>
@@ -207,7 +207,7 @@ defineExpose({
 
 Üst bileşen, şablon referansları aracılığıyla bu bileşenin bir örneğini aldığında elde edilen örnek `{ a: number, b: number }` biçiminde olur (`ref`'ler, normal örneklerde olduğu gibi otomatik olarak açılır).
 
-`defineExpose`, herhangi bir `await` işleminden önce çağrılmalıdır. Aksi takdirde `await` işleminden sonra dışarıya açılan özellikler ve metodlara erişilemez.
+`defineExpose`, herhangi bir `await` işleminden önce çağrılmalıdır. Aksi takdirde `await` işleminden sonra dışarıya açılan özellikler ve metotlara erişilemez.
 
 Ayrıca bkz.: [Bileşen Şablon Referanslarını Türleme](/guide/typescript/composition-api#typing-component-template-refs) <sup class="vt-badge ts" />
 
