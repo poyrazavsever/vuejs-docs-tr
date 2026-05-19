@@ -54,7 +54,7 @@ const model = defineModel()
 
 ### Arka planda {#under-the-hood}
 
-`defineModel`, kullanışlı bir makrodur. Derleyici onu şunlara açar:
+`defineModel`, kullanışlı bir makrodur. Derleyici bunu aşağıdakilere dönüştürür:
 
 - Yerel ref’in değeriyle eşitlenen `modelValue` adlı bir prop;
 - Yerel ref’in değeri değiştirildiğinde tetiklenen `update:modelValue` adlı bir olay.
@@ -97,7 +97,7 @@ const model = defineModel({ default: 0 })
 ```
 
 :::warning Uyarı
-`defineModel` prop’u için bir `varsayılan` değeriniz varsa ve üst bileşenden bu prop için hiçbir değer iletmezseniz, üst ve alt bileşenler arasında senkronizasyon bozukluğuna neden olabilir. Aşağıdaki örnekte üst bileşendeki `myRef` tanımsızdır, ancak alt bileşendeki `model` değeri 1’dir:
+`defineModel` prop’u için bir `default` değeriniz varsa ve üst bileşenden bu prop için hiçbir değer iletmezseniz, üst ve alt bileşenler arasında senkronizasyon bozulmasına neden olabilir. Aşağıdaki örnekte üst bileşendeki `myRef` tanımsızdır, ancak alt bileşendeki `model` değeri 1’dir:
 
 ```vue [Child.vue]
 <script setup>
@@ -127,7 +127,7 @@ const myRef = ref()
 <input v-model="searchText" />
 ```
 
-Arka planda, şablon derleyicisi `v-model`’i bizim için daha uzun eşdeğerine açar. Dolayısıyla yukarıdaki kod, aşağıdakiyle aynı işi yapar:
+Arka planda, şablon derleyicisi `v-model`’i bizim için daha uzun eşdeğerine dönüştürür. Dolayısıyla yukarıdaki kod, aşağıdakiyle aynı işi yapar:
 
 ```vue-html
 <input
@@ -136,7 +136,7 @@ Arka planda, şablon derleyicisi `v-model`’i bizim için daha uzun eşdeğerin
 />
 ```
 
-Bir bileşende kullanıldığında `v-model` bunun yerine şuna açılır:
+Bir bileşende kullanıldığında `v-model` bunun yerine şuna dönüşür:
 
 ```vue-html
 <CustomInput
@@ -147,8 +147,8 @@ Bir bileşende kullanıldığında `v-model` bunun yerine şuna açılır:
 
 Bunun gerçekten çalışması için `<CustomInput>` bileşeninin iki şey yapması gerekir:
 
-1. Yerleşik bir `<input>` öğesinin `value` özniteliğini `modelValue` prop’una bağlamak
-2. Yerleşik `input` olayı tetiklendiğinde, yeni değerle `update:modelValue` özel olayını tetiklemek
+1. Yerleşik bir `<input>` öğesinin `value` özniteliğini `modelValue` prop’una bağlamalı
+2. Yerleşik `input` olayı tetiklendiğinde, yeni değerle `update:modelValue` özel olayını tetiklemeli
 
 Örnek uygulama:
 
@@ -213,7 +213,7 @@ Bir bileşendeki `v-model` bir argüman da alabilir:
 
 <div class="composition-api">
 
-Alt bileşende, karşılık gelen argümanı desteklemek için `defineModel()` fonksiyonunun ilk argümanı olarak bir string iletebiliriz:
+Alt bileşende, karşılık gelen argümanı desteklemek için `defineModel()` fonksiyonunun ilk argümanı olarak bir string değer iletebiliriz:
 
 ```vue [MyComponent.vue]
 <script setup>
@@ -371,7 +371,7 @@ export default {
 </template>
 ```
 
-[Playground’da deneyin](https://play.vuejs.org/#eNqNkk1rg0AQgF9lkIKGpqa9iikNOefUtJfaw6KTZEHdZR1DbPDdO7saf0qgIq47//PNXL2N1uG5Ri/y4io1UtNrUspCK0Owa7aK/0osCQ5GFeCHq4nMuvlJCZCUeHEOGR5EnRNcrTS92VURXGex2qXVZ4JEsOhsAQxSbcrbDaBo9nihCHyXAaC1B3/4jVdDoXwhLHQuCPkGsD/JCmSpa4JUaEkilz9YAZ7RNHSS5REaVQPXgCay9vG0rPNToTLMw9FznXhdHYkHK04Qr4Zs3tL7g2JG8B4QbZS2LLqGXK5PkdcYwTsZrs1R6RU7lcmDRDPaM7AuWARMbf0KwbVdTNk4dyyk5f3l15r5YjRm8b+dQYF0UtkY1jo4fYDDLAByZBxWCmvAkIQ5IvdoBTcLeYCAiVbhvNwJvEk4GIK5M0xPwmwoeF6EpD60RrMVFXJXj72+ymWKwUvfXt+gfVzGB1tzcKfDZec+o/LfxsTdtlCj7bSpm3Xk4tjpD8FZ+uZMWTowu7MW7S+CWR77)
+[Playground’da deneyin](https://play.vuejs.org/#eNqNkk1rg0AQhv/KIAETSJRexYYWeuqhl9JTt4clmSSC7i7rKCnif+/ObtYkELAiujPzztejQ/JqTNZ3mBRJ2e5sZWgrVNUYbQm+WrQfskE4WN1AmuXRwQmpUELh2Qv3eJBdTTAIBbDTLluhoraA4VpjXHNwL0kuV0EIYJE6q6IFcKhsSwWk7/qkUq/nq5be+aa5JztGfrmHu8t8GtoZhI2pJaGzAMrT03YYQk0YR3BnruSOZe5CXhKnC3X7TaP3WBc+ZaOc/1kk3hDJvYILRQGfQzx3Rct8GiJZJ7fA7gg/AmesNszMrUIXFpxbwCfZSh09D0Hc7tbN6sAWm4qZf6edcZgxrMHSdA3RF7PTn1l8lTIdhbXp1/CmhOeJRNHLupv4eIaXyItPdJEFD7R8NM0Ce/d/ZCTtESnzlVZXhP/vHbeZaT0tPdf59uONfx7mDVM=)
 
 </div>
 
@@ -379,7 +379,7 @@ export default {
 
 Form input bağlamalarını incelerken, `v-model`’in [yerleşik değiştiricilere](/guide/essentials/forms#modifiers) sahip olduğunu görmüştük: `.trim`, `.number` ve `.lazy`. Bazı durumlarda özel input bileşeninizdeki `v-model`’in özel değiştiricileri desteklemesini de isteyebilirsiniz.
 
-Özel bir değiştirici örneği olan `capitalize` ile `v-model` bağlamasının sağladığı string'in ilk harfini büyütelim:
+Özel bir değiştirici örneği olan `capitalize` ile `v-model` bağlamasının sağladığı string değerin ilk harfini büyütelim:
 
 ```vue-html
 <MyComponent v-model.capitalize="myText" />
@@ -484,7 +484,7 @@ export default {
 
 Bileşenin `modelModifiers` prop’unun `capitalize` içerdiğine ve değerinin `true` olduğuna dikkat edin — bunun nedeni `v-model.capitalize="myText"` bağlamasında ayarlanmış olmasıdır.
 
-Prop’umuzu kurduğumuza göre, `modelModifiers` nesnesinin anahtarlarını kontrol edebilir ve yayımlanan değeri değiştiren bir işleyici yazabiliriz. Aşağıdaki kodda, `<input />` öğesi `input` olayı tetiklediğinde string'in ilk harfini büyüteceğiz.
+Prop’umuzu kurduğumuza göre, `modelModifiers` nesnesinin anahtarlarını kontrol edebilir ve yayımlanan değeri değiştiren bir işleyici yazabiliriz. Aşağıdaki kodda, `<input />` öğesi `input` olayı tetiklediğinde string değerin ilk harfini büyüteceğiz.
 
 ```vue{13-15}
 <script>
